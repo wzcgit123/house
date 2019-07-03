@@ -58,23 +58,59 @@ public class UsersController {
     //  登录验证
     @RequestMapping("/regLogin")
 
-    public String regLogin(String username,String password,Model model,HttpSession session){
+    public String regLogin(String inputCode,String username,String password,Model model,HttpSession session){
 
-        //调用service的方法
-        Users users = usersService.regLogin(username, password);
-
-        if (users!=null){
-
-            session.setAttribute("user",users);
-            session.setMaxInactiveInterval(600);
-            return "redirect:selectHouse";
-        }else {
-
-
-            model.addAttribute("info","密码或者账号错误");
-            return "login";
+        //比较验证码
+        //获取手机验证码
+        String code=session.getAttribute("code").toString();
+        if(code.equals(inputCode)){
+            //调用业务
+             Users user = usersService.regLogin(username, password);
+            if(user==null) {
+                model.addAttribute("info","用户名密码错误!");
+                return "login";  //继续登入
+            }
+            else {
+                //只要登入:使用session或者cookie保存登入的信息
+                session.setAttribute("user",user);
+                session.setMaxInactiveInterval(600); //30秒
+                return "redirect:selectHouse";  //用户中心的管理页
+            }
+        }else{
+            model.addAttribute("info","验证码错语!眼神不好使就医");
+            return "login";  //用户中心的管理页
         }
 
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        //调用service的方法
+//        Users users = usersService.regLogin(username, password);
+//
+//        if (users!=null){
+//
+//
+//            session.setAttribute("user",users);
+//            session.setMaxInactiveInterval(600);
+//            return "redirect:selectHouse";
+//        }else {
+//
+//
+//            model.addAttribute("info","密码或者账号错误");
+//            return "login";
+//        }
+//
+//
+//    }
 }

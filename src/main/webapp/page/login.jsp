@@ -2,7 +2,29 @@
 <HTML><HEAD><TITLE>青鸟租房 - 用户登录</TITLE>
 <META content="text/html; charset=utf-8" http-equiv=Content-Type><LINK 
 rel=stylesheet type=text/css href="../css/style.css">
-<META name=GENERATOR content="MSHTML 8.00.7601.17514"></HEAD>
+<META name=GENERATOR content="MSHTML 8.00.7601.17514">
+  <script  language="JavaScript" src="../admin/js/jquery-1.8.3.js"></script>
+  <script language="JavaScript">
+      $(function(){
+          $("#sendButon").click(function() {
+              $.post("/getCode",{"tel":$("#inputTel").val()},function(data){
+                  if(data.result>0){
+                      alert('请查收手机短信，看 验证码');
+                  }
+                  else{
+                      alert("短信发送失败，后期再会");
+                  }
+              },"json");
+
+
+          });
+
+      });
+
+  </script>
+
+
+</HEAD>
 <BODY>
 <DIV id=header class=wrap>
 <DIV id=logo><IMG src="../images/logo.gif"></DIV></DIV>
@@ -28,8 +50,25 @@ rel=stylesheet type=text/css href="../css/style.css">
 						<tr>
 							<td class="field">验 证 码：</td>
 							<td><input type="text" class="text verycode" name="veryCode" /></td>
-						</tr>
-						--></TBODY></TABLE>
+						</tr>-->
+	<TR>
+    <TD colspan="2" align="left">
+      输入手号机：<input id="inputTel" type="text" name="tel">  <input id="sendButon" type="button" value="获取验证码" />
+    </TD>
+  </TR>
+  <TR>
+    <td colspan="2" align="left">
+
+      输入验证码:<input type="text" name="inputCode">
+    </TD>
+  </TR>
+
+
+
+
+
+
+  </TBODY></TABLE>
 
 
 <DIV class=buttons> <INPUT  value=登陆 type=submit>
